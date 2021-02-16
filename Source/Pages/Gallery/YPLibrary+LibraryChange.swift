@@ -13,11 +13,12 @@ extension YPLibraryVC: PHPhotoLibraryChangeObserver {
     func registerForLibraryChanges() {
         PHPhotoLibrary.shared().register(self)
     }
-    
+
     public func photoLibraryDidChange(_ changeInstance: PHChange) {
         DispatchQueue.main.async {
             let fetchResult = self.mediaManager.fetchResult!
             let collectionChanges = changeInstance.changeDetails(for: fetchResult)
+            self.refreshMediaRequest()
             if collectionChanges != nil {
                 self.mediaManager.fetchResult = collectionChanges!.fetchResultAfterChanges
                 let collectionView = self.v.collectionView!
